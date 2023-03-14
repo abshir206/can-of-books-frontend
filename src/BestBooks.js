@@ -41,13 +41,11 @@ class BestBooks extends React.Component {
       console.log(error.response.data);
     }
   }
-  handleDelete = async (id) => {
-    await this.deleteBook(id)
-  }
+
   deleteBook = async (id) => {
     try {
-      console.log("clicked")
-      let url = `${SERVER}/books/book/${id}`
+      console.log("clicked");
+      let url = `${SERVER}/books/delete/${id}`;
       await axios.delete(url);
       let updatedBooks = this.state.books.filter(book => book._id !== id);
       this.setState({
@@ -88,10 +86,10 @@ class BestBooks extends React.Component {
         <Carousel.Caption>
           <h3>{book.title}</h3>
           <p>{book.description}</p>
-        </Carousel.Caption>
         <div className='DeleteButtonDiv'> 
-        <DeleteButton onClick= {() => {this.deleteBook(book._id)}}/>
+        <DeleteButton bookId={book._id} deleteBook={this.deleteBook}/>
           </div>
+        </Carousel.Caption>
       </Carousel.Item>
     })
 

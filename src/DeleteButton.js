@@ -8,9 +8,7 @@ class DeleteButton extends React.Component {
   render() {
     return(
       <>
-      <Button id = "DeleteButton" > Delete Book </Button>
-      
-      
+      <Button onClick={() => this.props.deleteBook(this.props.bookId)}> Delete Book </Button>
       
       </>
 
