@@ -4,6 +4,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import "./BestBooks.css";
 import BookForm from './Form';
 import Button from 'react-bootstrap/Button';
+import DeleteButton from './DeleteButton';
 let SERVER = process.env.REACT_APP_SERVER;
 
 
@@ -38,10 +39,25 @@ class BestBooks extends React.Component {
       })
     } catch (error) {
       console.log(error.response.data);
-  
     }
+  }
+  handleDelete = async (id) => {
+    await this.deleteBook(id)
+  }
+  deleteBook = async (id) => {
+    try {
+      console.log("clicked")
+      let url = `${SERVER}/books/book/${id}`
+      await axios.delete(url);
+      let updatedBooks = this.state.books.filter(book => book._id !== id);
+      this.setState({
+        books: updatedBooks
+      });
     
 
+    } catch(error) {
+      console.log(error);
+    }
   }
   getBooks = async () => {
     try {
@@ -73,6 +89,9 @@ class BestBooks extends React.Component {
           <h3>{book.title}</h3>
           <p>{book.description}</p>
         </Carousel.Caption>
+        <div className='DeleteButtonDiv'> 
+        <DeleteButton onClick= {() => {this.deleteBook(book._id)}}/>
+          </div>
       </Carousel.Item>
     })
 
@@ -87,6 +106,7 @@ class BestBooks extends React.Component {
           <Carousel> 
             {books}
           </Carousel>
+         
           <Button onClick={this.handleOpenModal}> Add Book </Button>
             <BookForm addBook={this.createBook} 
             show ={this.state.isModalOpen}
